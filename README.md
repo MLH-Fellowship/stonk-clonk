@@ -12,4 +12,20 @@ factors that influence stock prices: earnings reports, management changes,
 etc. As a result the model will not predict any extraordinary events like the 
 GME surge. It does work fairly well though!
 
-< TODO: Insert Images >
+## Development
+After cloning the project, install all the required dependencies.
+~~~
+python -m venv venv # Optional, create a virtual environment named venv
+source venv/bin/activate # Use the virtual environment
+pip install -r requirements.txt
+~~~
+
+You can generate a Bento with the following command
+~~~
+python -m stockclock
+~~~
+
+You can then run the Bento
+~~~
+bentoml serve StockClock:latest
+~~~
