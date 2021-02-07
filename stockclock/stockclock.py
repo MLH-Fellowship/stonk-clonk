@@ -32,5 +32,7 @@ class StockClock(BentoService):
         )
         y_pred = forecaster.predict(fh)
 
-        y_pred.index = y_pred.index.map(lambda date: str(date))
-        return y_pred.to_dict()
+        output = data.append(y_pred)
+
+        output.index = output.index.map(lambda date: str(date))
+        return output.to_dict()
