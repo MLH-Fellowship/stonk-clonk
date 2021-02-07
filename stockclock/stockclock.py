@@ -1,20 +1,19 @@
+import pandas as pd
 import yfinance as yf
 from bentoml import env, artifacts, api, BentoService
 from bentoml.adapters import JsonInput
-from pandas._libs.tslibs.period import Period
 from sktime.forecasting.arima import ARIMA
 from sktime.forecasting.base import ForecastingHorizon
-import pandas as pd
+from datetime import datetime, timedelta
 
 
 @env(infer_pip_packages=True)
 @artifacts([])
-class SktimeForecastBento(BentoService):
-    @api(input=JsonInput())
-    def predict(self, input):
-        stock = yf.Ticker(input["ticker"])
-        hist = stock.history(period="max")
-        hist.index = hist.index.map(lambda date: date.to_period(freq="M"))
+class StockClock(BentoService):
+    @api(input=JsonInput(http_input_example='{"ticker": "AAPL", "months": 3}'))
+    def predict(self, request):
+        stock = yf.Ticker(request["ticker"])
+        hist = stock.history(period="5y", interval="1mo").to_period(freq="M")
         data = hist[~hist.index.duplicated(keep="first")]["Close"]
 
         forecaster = ARIMA(
@@ -23,7 +22,14 @@ class SktimeForecastBento(BentoService):
         )
         forecaster.fit(data)
 
-        fh = ForecastingHorizon(pd.to_datetime(["2021-03", "2021-04", "2021-05"]).map(lambda date: date.to_period(freq="M")), is_relative=False)
+        fh = ForecastingHorizon(
+            pd.period_range(
+                datetime.now() + timedelta(30),
+                datetime.now() + timedelta(30 * request["months"]),
+                freq="M"
+            ),
+            is_relative=False
+        )
         y_pred = forecaster.predict(fh)
 
         y_pred.index = y_pred.index.map(lambda date: str(date))
