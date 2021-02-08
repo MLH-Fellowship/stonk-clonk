@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>StockClock</title>
+    </head>
+    <body>
+        <form>
+            <label>
+                Stock Symbol
+                <input type="text" name="ticker">
+            </label>
+            <label>
+                Months to Predict
+                <input type="number" name="months">
+            </label>
+            <input type="submit" value="Clock It!">
+        </form>
+
+        <script>
+            const form = document.querySelector("form");
+            const symbol = document.querySelector("input[name=ticker]");
+            const months = document.querySelector("input[name=months]");
+
+            form.addEventListener("submit", async function (ev) {
+                ev.preventDefault();
+                const response = await fetch("http://localhost:8010/proxy/predict", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        "ticker": symbol.value,
+                        "months": parseInt(months.value)
+                    })
+                });
+                console.log(
+                    await response.text()
+                );
+            });
+        </script>
+    </body>
+</html>
