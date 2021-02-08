@@ -1,3 +1,4 @@
-bentoml
-sktime
-pmdarima
+BentoML==0.11.0
+pmdarima==1.8.0
+sktime==0.5.3
+yfinance==0.1.55
