@@ -7,7 +7,7 @@ from sktime.forecasting.base import ForecastingHorizon
 from datetime import datetime, timedelta
 
 
-@env(infer_pip_packages=True)
+@env(infer_pip_packages=True, requirements_txt_file="requirements.txt")
 @artifacts([])
 class StonkClonk(BentoService):
     @api(input=JsonInput(http_input_example='{"ticker": "AAPL", "months": 3}'))
