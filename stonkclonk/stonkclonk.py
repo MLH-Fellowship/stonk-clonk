@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 
 @env(infer_pip_packages=True)
 @artifacts([])
-class StockClock(BentoService):
+class StonkClonk(BentoService):
     @api(input=JsonInput(http_input_example='{"ticker": "AAPL", "months": 3}'))
     def predict(self, request):
         stock = yf.Ticker(request["ticker"])

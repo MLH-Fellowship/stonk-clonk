@@ -1,4 +1,4 @@
-# stonk clonk
+# Stonk Clonk
 
 > A stock price prediction algorithm powered by `bentoml` and `sktime`
 
@@ -22,10 +22,10 @@ pip install -r requirements.txt
 
 You can generate a Bento with the following command
 ~~~
-python -m stockclock
+python -m stonkclonk
 ~~~
 
 You can then run the Bento
 ~~~
-bentoml serve StockClock:latest
+bentoml serve StonkClonk:latest
 ~~~
