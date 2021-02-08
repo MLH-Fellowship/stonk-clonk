@@ -16,8 +16,10 @@
             </label>
             <input type="submit" value="Clock It!">
         </form>
-
+        <canvas id="myChart" width="800" height="450"></canvas>
+        <script src="/home/drewehrlich/Downloads/package/dist/Chart.js"></script>
         <script>
+            var ctx = document.getElementById('myChart').getContext('2d');
             const form = document.querySelector("form");
             const symbol = document.querySelector("input[name=ticker]");
             const months = document.querySelector("input[name=months]");
@@ -31,10 +33,43 @@
                         "months": parseInt(months.value)
                     })
                 });
-                console.log(
-                    await response.text()
-                );
-            });
+
+                var obj = await response.json();
+                await console.log(obj);
+                var values = Object.keys(obj).map(function (key) { return obj[key]; });
+                var keys = Object.keys(obj);
+                console.log(values);
+                console.log(keys)
+                new Chart(ctx, {
+                  type: 'line',
+                  data: {
+                    labels: keys,
+                    datasets: [{
+                        data: values,
+                        label: symbol.value,
+                        fill: false,
+                        borderColor: '#C8A2C8',
+                        pointBackgroundColor: function(context) {
+                            var index = context.dataIndex;
+                            var value = context.dataset.data[index];
+                            console.log(index)
+                            return index > 59 ? 'yellow' :    // else, alternate values in blue and green
+                                    'blue';
+                        }
+                      },
+                    ]
+                  },
+                  options: {
+                    title: {
+                      display: true,
+                      text: 'Blue Dots are Historical, Yellow Dots are Predictions'
+                    },
+                  }
+                });
+
+              });
+
         </script>
+        <p style="text-align: center;"> The contents on this site are for informational and entertainment purposes only and does not constitute financial, accounting, or legal advice. </p>
     </body>
 </html>
