@@ -1,4 +1,4 @@
-# StockClock
+# stonk clonk
 
 > A stock price prediction algorithm powered by `bentoml` and `sktime`
 
