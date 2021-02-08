@@ -5,10 +5,12 @@ from bentoml.adapters import JsonInput
 from sktime.forecasting.arima import ARIMA
 from sktime.forecasting.base import ForecastingHorizon
 from datetime import datetime, timedelta
+from bentoml import web_static_content
 
 
 @env(infer_pip_packages=True, requirements_txt_file="requirements.txt")
 @artifacts([])
+@web_static_content("./static/")
 class StonkClonk(BentoService):
     @api(input=JsonInput(http_input_example='{"ticker": "AAPL", "months": 3}'))
     def predict(self, request):
