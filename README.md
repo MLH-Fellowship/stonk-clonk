@@ -29,3 +29,8 @@ You can then run the Bento
 ~~~
 bentoml serve StockClock:latest
 ~~~
+
+After doing that, start a proxy server to add CORS headers.
+~~~
+lcp --proxyUrl http://localhost:5000
+~~~
